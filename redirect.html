@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Redireccionando...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script>
+    function getQueryParams() {
+      const params = {};
+      const queryString = window.location.search.substring(1);
+      const pairs = queryString.split("&");
+
+      for (const pair of pairs) {
+        const [key, value] = pair.split("=");
+        if (key && value) {
+          params[decodeURIComponent(key)] = decodeURIComponent(value);
+        }
+      }
+      return params;
+    }
+
+    window.onload = function () {
+      const params = getQueryParams();
+      const baseUri = "bankaool://promo";
+      const query = new URLSearchParams(params).toString();
+      const finalUri = `${baseUri}?${query}`;
+
+      window.location.href = finalUri;
+
+      // Fallback después de unos segundos
+      setTimeout(function () {
+        window.location.href = "https://tusitio.com/fallback";
+      }, 1);
+    };
+  </script>
+
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <p>Redirigiendo a la aplicación...</p>
+    <p>Si no se abre automáticamente, <a id="manual-link" href="#">haz clic aquí</a>.</p>
+  </div>
+
+  <script>
+    // También actualiza el enlace manual por si el redirect automático falla
+    const params = getQueryParams();
+    const query = new URLSearchParams(params).toString();
+    const manualUri = `bankaool://promo?${query}`;
+    document.getElementById('manual-link').href = manualUri;
+  </script>
+</body>
+</html>
